@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:cr="http://example.org/CategoriesRequired.rdfs#"
+xmlns:skill="http://kmm.lboro.ac.uk/ecos/1.0#"
+xml:base="http://example.org/CategoriesRequired.rdfs#">
+
+<cr:CategoriesRequired rdf:ID="oferta2">
+
+<cr:hasDetails>
+<cr:Details>
+<cr:endDate>2012-08-31</cr:endDate>
+<cr:startDate>2012-07-01</cr:startDate>
+</cr:Details>
+</cr:hasDetails>
+
+<cr:hasCategorieDetails>
+<cr:CategorieDetails>
+
+<cr:requiredCompetence>
+<skill:Collaborative_processes>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Experto"/>
+</skill:Collaborative_processes>
+</cr:requiredCompetence>
+
+<cr:requiredCompetence>
+<skill:eHealth>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Básico"/>
+</skill:eHealth>
+</cr:requiredCompetence>
+
+<cr:requiredCompetence>
+<skill:Biomedical>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Experto"/>
+</skill:Biomedical>
+</cr:requiredCompetence>
+
+<cr:requiredCompetence>
+<skill:Natural_language>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Avanzado"/>
+</skill:Natural_language>
+</cr:requiredCompetence>
+
+<cr:requiredCompetence>
+<skill:Composición_y_agregación_de_mashups>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Básico"/>
+</skill:Composición_y_agregación_de_mashups>
+</cr:requiredCompetence>
+
+</cr:CategorieDetails>
+
+</cr:hasCategorieDetails>
+
+</cr:CategoriesRequired>
+<cr:CategoriesRequired rdf:ID="oferta3">
+
+<cr:hasDetails>
+<cr:Details>
+<cr:endDate>2012-08-31</cr:endDate>
+<cr:startDate>2012-07-01</cr:startDate>
+</cr:Details>
+</cr:hasDetails>
+
+<cr:hasCategorieDetails>
+<cr:CategorieDetails>
+
+<cr:requiredCompetence>
+<skill:Business_Intelligence>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Advanced"/>
+</skill:Business_Intelligence>
+</cr:requiredCompetence>
+
+<cr:requiredCompetence>
+<skill:Business_Intelligence>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Advanced"/>
+</skill:Business_Intelligence>
+</cr:requiredCompetence>
+
+<cr:requiredCompetence>
+<skill:Business_Intelligence>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Advanced"/>
+</skill:Business_Intelligence>
+</cr:requiredCompetence>
+
+<cr:requiredCompetence>
+<skill:SLA>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Intermediate"/>
+</skill:SLA>
+</cr:requiredCompetence>
+
+<cr:requiredCompetence>
+<skill:SLA>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Intermediate"/>
+</skill:SLA>
+</cr:requiredCompetence>
+
+<cr:requiredCompetence>
+<skill:SLA>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Intermediate"/>
+</skill:SLA>
+</cr:requiredCompetence>
+
+<cr:requiredCompetence>
+<skill:Resource_Oriented_Architecture>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Intermediate"/>
+</skill:Resource_Oriented_Architecture>
+</cr:requiredCompetence>
+
+<cr:requiredCompetence>
+<skill:Resource_Oriented_Architecture>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Intermediate"/>
+</skill:Resource_Oriented_Architecture>
+</cr:requiredCompetence>
+
+<cr:requiredCompetence>
+<skill:Resource_Oriented_Architecture>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Intermediate"/>
+</skill:Resource_Oriented_Architecture>
+</cr:requiredCompetence>
+
+</cr:CategorieDetails>
+
+</cr:hasCategorieDetails>
+
+</cr:CategoriesRequired>
+<cr:CategoriesRequired rdf:ID="oferta4">
+
+<cr:hasDetails>
+<cr:Details>
+<cr:endDate>2012-08-31</cr:endDate>
+<cr:startDate>2012-07-01</cr:startDate>
+</cr:Details>
+</cr:hasDetails>
+
+<cr:hasCategorieDetails>
+<cr:CategorieDetails>
+
+<cr:requiredCompetence>
+<skill:Automobile>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Expert"/>
+</skill:Automobile>
+</cr:requiredCompetence>
+
+<cr:requiredCompetence>
+<skill:Seguridad_de_la_información_gestionada>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Intermediate"/>
+</skill:Seguridad_de_la_información_gestionada>
+</cr:requiredCompetence>
+
+<cr:requiredCompetence>
+<skill:Privacidad_de_datos_y_de_localización>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Advanced"/>
+</skill:Privacidad_de_datos_y_de_localización>
+</cr:requiredCompetence>
+
+</cr:CategorieDetails>
+
+</cr:hasCategorieDetails>
+
+</cr:CategoriesRequired>
+<cr:CategoriesRequired rdf:ID="oferta5">
+
+<cr:hasDetails>
+<cr:Details>
+<cr:endDate>2012-08-31</cr:endDate>
+<cr:startDate>2012-07-01</cr:startDate>
+</cr:Details>
+</cr:hasDetails>
+
+<cr:hasCategorieDetails>
+<cr:CategorieDetails>
+
+<cr:requiredCompetence>
+<skill:Automobile>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Básico"/>
+</skill:Automobile>
+</cr:requiredCompetence>
+
+<cr:requiredCompetence>
+<skill:Software_Quality>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Experto"/>
+</skill:Software_Quality>
+</cr:requiredCompetence>
+
+<cr:requiredCompetence>
+<skill:Seguridad_de_la_información_gestionada>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Avanzado"/>
+</skill:Seguridad_de_la_información_gestionada>
+</cr:requiredCompetence>
+
+</cr:CategorieDetails>
+
+</cr:hasCategorieDetails>
+
+</cr:CategoriesRequired>
+</rdf:RDF>

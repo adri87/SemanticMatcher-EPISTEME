@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:cr="http://example.org/CategoriesRequired.rdfs#"
+xmlns:skill="http://kmm.lboro.ac.uk/ecos/1.0#"
+xml:base="http://example.org/CategoriesRequired.rdfs#">
+<cr:CategoriesRequired rdf:ID="offer1">
+<cr:hasDetails>
+<cr:Details>
+<cr:endDate>2012-08-31</cr:endDate>
+<cr:startDate>2012-07-01</cr:startDate>
+</cr:Details>
+</cr:hasDetails>
+<cr:hasCategorieDetails>
+<cr:CategorieDetails>
+<cr:requiredCompetence>
+<skill:Arquitectura_de_referencia>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Expert"/>
+</skill:Arquitectura_de_referencia>
+</cr:requiredCompetence>
+</cr:CategorieDetails>
+</cr:hasCategorieDetails>
+</cr:CategoriesRequired>
+<cr:CategoriesRequired rdf:ID="offer2">
+<cr:hasDetails>
+<cr:Details>
+<cr:endDate>2012-08-31</cr:endDate>
+<cr:startDate>2012-07-01</cr:startDate>
+</cr:Details>
+</cr:hasDetails>
+<cr:hasCategorieDetails>
+<cr:CategorieDetails>
+<cr:requiredCompetence>
+<skill:Sistemas_de_inferencia_automáticos_para_validar_y_completar_la_información>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Expert"/>
+</skill:Sistemas_de_inferencia_automáticos_para_validar_y_completar_la_información>
+</cr:requiredCompetence>
+<cr:requiredCompetence>
+<skill:Composición_y_agregación_de_mashups>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Advanced"/>
+</skill:Composición_y_agregación_de_mashups>
+</cr:requiredCompetence>
+<cr:requiredCompetence>
+<skill:Accesibilidad>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Advanced"/>
+</skill:Accesibilidad>
+</cr:requiredCompetence>
+<cr:requiredCompetence>
+<skill:Diseño_de_interfaces_adaptativas>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Intermediate"/>
+</skill:Diseño_de_interfaces_adaptativas>
+</cr:requiredCompetence>
+</cr:CategorieDetails>
+</cr:hasCategorieDetails>
+</cr:CategoriesRequired>
+<cr:CategoriesRequired rdf:ID="offer3">
+<cr:hasDetails>
+<cr:Details>
+<cr:endDate>2012-08-31</cr:endDate>
+<cr:startDate>2012-07-01</cr:startDate>
+</cr:Details>
+</cr:hasDetails>
+<cr:hasCategorieDetails>
+<cr:CategorieDetails>
+<cr:requiredCompetence>
+<skill:Ontologías_para_descripción_de_interacción_usuarios_interfaces_y_capacidades_de_los_sistemas.>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Expert"/>
+</skill:Ontologías_para_descripción_de_interacción_usuarios_interfaces_y_capacidades_de_los_sistemas.>
+</cr:requiredCompetence>
+<cr:requiredCompetence>
+<skill:Arquitectura_de_referencia>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Advanced"/>
+</skill:Arquitectura_de_referencia>
+</cr:requiredCompetence>
+<cr:requiredCompetence>
+<skill:Análisis_y_evolución_de_procesos._Reglas_y_métricas_de_proceso.>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Advanced"/>
+</skill:Análisis_y_evolución_de_procesos._Reglas_y_métricas_de_proceso.>
+</cr:requiredCompetence>
+<cr:requiredCompetence>
+<skill:Gestión_de_políticas_y_SLAs>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Advanced"/>
+</skill:Gestión_de_políticas_y_SLAs>
+</cr:requiredCompetence>
+<cr:requiredCompetence>
+<skill:Adaptación_al_usuario>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Advanced"/>
+</skill:Adaptación_al_usuario>
+</cr:requiredCompetence>
+<cr:requiredCompetence>
+<skill:Privacidad_de_datos_y_de_localización>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Intermediate"/>
+</skill:Privacidad_de_datos_y_de_localización>
+</cr:requiredCompetence>
+<cr:requiredCompetence>
+<skill:Resource_Oriented_Architecture>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Advanced"/>
+</skill:Resource_Oriented_Architecture>
+</cr:requiredCompetence>
+<cr:requiredCompetence>
+<skill:Tratamiento_del_lenguaje_natural>
+<skill:competenceLevel rdf:resource="http://kmm.lboro.ac.uk/ecos/1.0#Advanced"/>
+</skill:Tratamiento_del_lenguaje_natural>
+</cr:requiredCompetence>
+</cr:CategorieDetails>
+</cr:hasCategorieDetails>
+</cr:CategoriesRequired>
+</rdf:RDF>
