@@ -20,5 +20,7 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
-	
-	</web-app>
+	<listener>
+    	<listener-class>es.upm.dit.gsi.episteme.timer.Tarea</listener-class>
+  	</listener>
+</web-app>

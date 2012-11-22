@@ -242,7 +242,7 @@ public class SemanticSemMF {
 					NodeMatchingResult nmr = (NodeMatchingResult) itN.next();
 					List propertyList = nmr.getPropertyMatchingResultList();
 					for (Iterator itP = propertyList.iterator(); itP.hasNext();) {
-						JSONObject  aux = new JSONObject();
+//						JSONObject  aux = new JSONObject(); //En caso de introducir semantica con el método introduceSemantic2
 						PropertyMatchingResult pmr = (PropertyMatchingResult) itP.next();
 						String req = relationStructureOffer.get(pmr.getQueryPropVal().toString().substring(32));
 						if (req	!= null){
@@ -250,8 +250,8 @@ public class SemanticSemMF {
 								store.put(req, (store.get(req)+nmr.getSimilarity())/2);
 							else
 								store.put(req, nmr.getSimilarity());
-							aux.put("value", store.get(req));
-							skills.put(req, aux);
+//							aux.put("value", store.get(req)); // Ver nota de aux
+							skills.put(req, store.get(req));
 						}
 					}
 				}

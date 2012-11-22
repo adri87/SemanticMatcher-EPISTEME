@@ -3,8 +3,6 @@ package es.upm.dit.gsi.episteme.server;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,6 +29,14 @@ public class CompanyMatcher extends HttpServlet {
      */
     public CompanyMatcher() {
         super();
+    }
+    
+    /**
+     * @return
+     */
+    public String getPathFile(){
+    	String a =getServletContext().getRealPath("/");
+    	return a;
     }
 
 	/**
@@ -65,25 +71,18 @@ public class CompanyMatcher extends HttpServlet {
 		
 		// Declaring variables
 		String baseUrl = getServletContext().getRealPath("/");
-		System.out.println(baseUrl);
 		
 		// write rdf advertising/offer and enterprises
-//		TimerTask timerTask = new TimerTask(){
-//			public void run() {
-//				File fileOff = new File("/home/adri/Descargas/offers.rdf");
-////	        	File fileOff = new File(getServletContext().getRealPath("/temp") + "/prove" + Long.toString(System.nanoTime()) + ".rdf");
-//	        	String pathFileOffer = RdfConstructor.rdfOffer(fileOff);	         
-//	        	
-//	        	File fileEnt = new File("/home/adri/Descargas/enterprises.rdf");
-////	        	File fileEnt = new File(getServletContext().getRealPath("/temp") + "/ent" + Long.toString(System.nanoTime()) + ".rdf");
-//	        	String pathFileEnt = RdfConstructor.rdfEnterprises(fileEnt);
-//	        	}
-//			};
-//       Timer timer = new Timer();
-//       timer.scheduleAtFixedRate(timerTask, 0, 3600000);  
+		File fileOff = new File("/home/adri/Descargas/offers.rdf");
+//	    File fileOff = new File(getServletContext().getRealPath("/temp") + "/prove" + Long.toString(System.nanoTime()) + ".rdf");
+	    String pathFileOffer = RdfConstructor.rdfOffer(fileOff);	         
+	        	
+//	    File fileEnt = new File("/home/adri/Descargas/enterprises.rdf");
+////	    File fileEnt = new File(getServletContext().getRealPath("/temp") + "/ent" + Long.toString(System.nanoTime()) + ".rdf");
+//	    String pathFileEnt = RdfConstructor.rdfEnterprises(fileEnt);
 		
         //execute semantic matching (using semmf)
-		String pathFileOffer = baseUrl + "doc/offers.rdf";
+//		String pathFileOffer = baseUrl + "doc/offers.rdf";
 		String pathFileEnt = baseUrl + "doc/enterprises.rdf";
         JSONObject semanticResult = SemanticSemMF.calMatching(baseUrl, pathFileEnt, pathFileOffer, oferta);
         
