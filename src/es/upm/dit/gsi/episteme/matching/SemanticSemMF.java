@@ -26,6 +26,7 @@ import de.fuberlin.wiwiss.semmf.result.NodeMatchingResult;
 import de.fuberlin.wiwiss.semmf.result.PropertyMatchingResult;
 import de.fuberlin.wiwiss.semmf.vocabulary.MD;
 import es.upm.dit.gsi.episteme.json.JSONTreatment;
+import es.upm.dit.gsi.episteme.rdfs.RdfConstructor;
 
 /**
  * 
@@ -51,12 +52,6 @@ public class SemanticSemMF {
 			
 		MatchingEngine me = new MatchingEngine("file:" + baseURL + "config/assemblerMappings.rdf", 
 				"file:" + baseURL + "doc/serviceMD.n3", "N3");
-//		File archivo = new File(pathFileEnt);
-//		FileReader fr = new FileReader(archivo);
-//		BufferedReader  br = new BufferedReader(fr);
-//	    String linea;
-//	    while((linea=br.readLine())!=null)
-//	   	System.out.println(linea);
 		MatchingResult mr = me.exec();
 		
 		File outputFile = new File(filePathServiceMD);
@@ -64,7 +59,7 @@ public class SemanticSemMF {
         	outputFile.delete();        	 
 		}
 		
-		printMatchingResult(mr);
+		printMatchingResult(mr);  // Para imprimir los resultados por consola
 		return getSemanticSemMF(mr, oferta);
 	}
 	
@@ -111,7 +106,7 @@ public class SemanticSemMF {
 		pmds.add(pmd_skill);
 		pmd_skill.addProperty(RDF.type, MD.PropertyMatchingDescription);
 		pmd_skill.addProperty(MD.label, "skill");
-		pmd_skill.addProperty(MD.weight, "0.8");
+		pmd_skill.addProperty(MD.weight, "0.65");
 		pmd_skill.addProperty(MD.queryPropURI, RDF.type);
 		pmd_skill.addProperty(MD.resPropURI, RDF.type);
 		pmd_skill.addProperty(MD.reverseMatching, "false");
@@ -136,7 +131,7 @@ public class SemanticSemMF {
 		pmds.add(pmd_skilllevel);
 		pmd_skilllevel.addProperty(RDF.type, MD.PropertyMatchingDescription);
 		pmd_skilllevel.addProperty(MD.label, "skill level");
-		pmd_skilllevel.addProperty(MD.weight, "0.2");
+		pmd_skilllevel.addProperty(MD.weight, "0.35");
 		pmd_skilllevel.addProperty(MD.queryPropURI, "http://kmm.lboro.ac.uk/ecos/1.0#competenceLevel");
 		pmd_skilllevel.addProperty(MD.resPropURI, "http://kmm.lboro.ac.uk/ecos/1.0#competenceLevel");
 		pmd_skilllevel.addProperty(MD.reverseMatching, "false");
@@ -224,39 +219,11 @@ public class SemanticSemMF {
 	
 	@SuppressWarnings("rawtypes")
 	public static JSONObject getSemanticSemMF (MatchingResult mr, String oferta) throws JSONException {
-//		// Con empresas de VULKA
-//		JSONObject semanticResult = new JSONObject();
-//		while (mr.hasNext()) {
-//			GraphMatchingResult gmr = mr.next();
-//			List clusterList = gmr.getClusterMatchingResultList();
-//			gmr.getResGraphEntryNode().getURI(); // name of enterprise
-//			gmr.getSimilarity(); // simililarity global
-//			for (Iterator itC = clusterList.iterator(); itC.hasNext();) {
-//				JSONObject skills = new JSONObject();
-//				ClusterMatchingResult cmr = (ClusterMatchingResult) itC.next();
-//				List nodeList = cmr.getNodeMatchingResultList();
-//				for (Iterator itN = nodeList.iterator(); itN.hasNext();) {
-//					NodeMatchingResult nmr = (NodeMatchingResult) itN.next();
-//					List propertyList = nmr.getPropertyMatchingResultList();
-//					for (Iterator itP = propertyList.iterator(); itP.hasNext();) {
-//						PropertyMatchingResult pmr = (PropertyMatchingResult) itP.next();
-//						JSONObject skillEnt = new JSONObject();
-//						skillEnt.put(pmr.getResPropVal().toString().substring(32), pmr.getSimilarity());
-//						skills.put(pmr.getQueryPropVal().toString().substring(32), skillEnt);
-//					}
-//				}
-//				skills.put("global", gmr.getSimilarity());
-//				semanticResult.put(gmr.getResGraphEntryNode().getURI(), skills);
-//			}
-//		}		
-//		mr.setToFirst();
-		
-		// Con INES
 		JSONArray offerStructure = JSONTreatment.getOportunities(oferta);
 		HashMap<String, String> relationStructureOffer = new HashMap<String, String>();
 		for (int i = 0; i < offerStructure.length(); i++) {
 			String req = offerStructure.getJSONObject(i).getJSONObject("req").getString("value");
-			String field = transformString(offerStructure.getJSONObject(i).getJSONObject("field").getString("value"));
+			String field = RdfConstructor.transform(offerStructure.getJSONObject(i).getJSONObject("field").getString("value"));
 			relationStructureOffer.put(field, req);
 		}
 		
@@ -268,21 +235,23 @@ public class SemanticSemMF {
 			gmr.getSimilarity(); // simililarity global
 			for (Iterator itC = clusterList.iterator(); itC.hasNext();) {
 				HashMap<String, Float> store = new HashMap<String, Float>();
-				JSONObject skills = new JSONObject();
+				JSONObject skills= new JSONObject();
 				ClusterMatchingResult cmr = (ClusterMatchingResult) itC.next();
 				List nodeList = cmr.getNodeMatchingResultList();
 				for (Iterator itN = nodeList.iterator(); itN.hasNext();) {
 					NodeMatchingResult nmr = (NodeMatchingResult) itN.next();
 					List propertyList = nmr.getPropertyMatchingResultList();
 					for (Iterator itP = propertyList.iterator(); itP.hasNext();) {
+						JSONObject  aux = new JSONObject();
 						PropertyMatchingResult pmr = (PropertyMatchingResult) itP.next();
 						String req = relationStructureOffer.get(pmr.getQueryPropVal().toString().substring(32));
 						if (req	!= null){
 							if (store.get(req) != null)
-								store.put(req, (store.get(req)+nmr.getSimilarity())/3);
+								store.put(req, (store.get(req)+nmr.getSimilarity())/2);
 							else
 								store.put(req, nmr.getSimilarity());
-							skills.put(req, store.get(req));
+							aux.put("value", store.get(req));
+							skills.put(req, aux);
 						}
 					}
 				}
@@ -315,14 +284,5 @@ public class SemanticSemMF {
 			out.close();
 		}
 		catch (IOException e) { System.out.println(e.toString()); }
-	}
-	
-	/**
-	 * @param skill
-	 * @return
-	 */
-	public static String transformString (String skill){
-		return skill.replace(" ", "_").replace(",", "").replace("(", "").replace(")","").replace("/", "_").replace("&", "_").replace("®", "").replace(":", "").replace("-*", "").replace("…", "");
-	}
-	
+	}	
 }

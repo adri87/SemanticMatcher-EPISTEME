@@ -26,81 +26,37 @@ public class JSONTreatment {
 	 * @return 
 	 * 
 	 */
-	public static JSONObject treatment(){
-//		Con las empresas de VULKA
-//		String queryEnterprise = queryPrefix + "SELECT ?id ?nombre ?logo ?url ?streetaddress ?localidad WHERE {" +
-//				"?id rdf:type <http://kmm.lboro.ac.uk/ecos/1.0#Enterprise> ;" +		
-//				"    <http://www.w3.org/2006/vcard/ns#VCard> ?nodoblanco . " +
-//				"?nodoblanco <http://www.w3.org/2006/vcard/ns#logo> ?logo . " +
-//				"?nodoblanco <http://www.w3.org/2006/vcard/ns#fn> ?nombre . " +
-//				"?nodoblanco <http://www.w3.org/2006/vcard/ns#url> ?url . " +
-//				"?nodoblanco <http://www.w3.org/2006/vcard/ns#adr> ?adrnodoblanco . " +
-//				"?adrnodoblanco <http://www.w3.org/2006/vcard/ns#street-address> ?streetaddress . " +
-//				"?adrnodoblanco <http://www.w3.org/2006/vcard/ns#locality> ?localidad . " +
-//				"}LIMIT 10";
-//		
-//		String querySkills = queryPrefix + "SELECT ?id ?skill WHERE {" +
-//				"?id <http://kmm.lboro.ac.uk/ecos/1.0#Specific> ?o ." +
-//				"?o <http://kmm.lboro.ac.uk/ecos/1.0#Skill> ?skills ." +
-//				"?skills rdf:Bag ?bag ." +
-//				"?bag ?p ?bagid ." +
-//				"?bagid <http://kmm.lboro.ac.uk/ecos/1.0#name> ?skill ." +
-//				"FILTER ( lang(?skill) = \"es\" )" +
-//				"}ORDER BY(?id)";
-		
-		
-		// Con las empresas de INES
-//		String queryEnterprise = queryPrefix + "SELECT ?id ?name ?logo ?postalcode ?province ?address ?type ?summary WHERE {" +
-//				"?id <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://kmm.lboro.ac.uk/ecos/1.0#Enterprise> ;" +
-//				"   <http://www.w3.org/2006/vcard/ns#VCard> ?vcard ." +
-//				"OPTIONAL{" +
-//				"?vcard <http://www.w3.org/2006/vcard/ns#logo> ?logo ." +
-//				"}" +
-//				"?vcard <http://www.w3.org/2006/vcard/ns#fn> ?name ." +
-//				"?vcard <http://www.w3.org/2006/vcard/ns#adr> ?direccionnodo ." +
-//				"?direccionnodo <http://www.w3.org/2006/vcard/ns#postal-code> ?postalcode ." +
-//				"?direccionnodo <http://www.w3.org/2006/vcard/ns#locality> ?province ." +
-//				"?direccionnodo <http://www.w3.org/2006/vcard/ns#street-address> ?address ." +
-//				"?vcard <http://www.w3.org/2006/vcard/ns#org> ?org ." +
-//				"?org <http://www.w3.org/2006/vcard/ns#organisation-unit> ?type ." +
-//				"?s <http://kmm.lboro.ac.uk/ecos/1.0#Specific> ?specific ." +
-//				"?specific <http://kmm.lboro.ac.uk/ecos/1.0#Plan> ?plan ." +
-//				"?plan <http://kmm.lboro.ac.uk/ecos/1.0#detail> ?summary" +
-//				"}LIMIT 1";
-		
-		String queryEnterprise = queryPrefix + "SELECT ?id WHERE {" +
-		"?id <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://kmm.lboro.ac.uk/ecos/1.0#Enterprise> ;" +
-		"   <http://www.w3.org/2006/vcard/ns#VCard> ?vcard ." +
+	public static JSONObject treatment(){		
+		String queryEnterprise = queryPrefix + "SELECT ?id ?name ?logo ?postalcode ?province ?address ?type ?summary WHERE {" +
+				"?id <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://kmm.lboro.ac.uk/ecos/1.0#Enterprise> ;" +
+				"   <http://www.w3.org/2006/vcard/ns#VCard> ?vcard ." +
+				"OPTIONAL{" +
+				"?vcard <http://www.w3.org/2006/vcard/ns#logo> ?logo ." +
+				"}" +
+				"?vcard <http://www.w3.org/2006/vcard/ns#fn> ?name ;" +
+				"       <http://www.w3.org/2006/vcard/ns#adr> ?direccionnodo ." +
+				"?direccionnodo <http://www.w3.org/2006/vcard/ns#postal-code> ?postalcode ;" +
+				"               <http://www.w3.org/2006/vcard/ns#locality> ?province ;" +
+				"               <http://www.w3.org/2006/vcard/ns#street-address> ?address ." +
+				"?vcard <http://www.w3.org/2006/vcard/ns#org> ?org ." +
+				"?org <http://www.w3.org/2006/vcard/ns#organisation-unit> ?type ." +
+				"?id <http://kmm.lboro.ac.uk/ecos/1.0#Specific> ?specific ." +
+				"?specific <http://kmm.lboro.ac.uk/ecos/1.0#Plan> ?plan ." +
+				"?plan <http://kmm.lboro.ac.uk/ecos/1.0#detail> ?summary" +
 		"}";
 
-//		String querySkills = queryPrefix + "SELECT ?id ?skill ?skilllevel WHERE {" +
-//				"?id <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://kmm.lboro.ac.uk/ecos/1.0#Enterprise> ." +
-//				"?id <http://www.w3.org/2006/vcard/ns#VCard> ?vcard ." +
-//				"?id <http://kmm.lboro.ac.uk/ecos/1.0#Specific> ?specific ." +
-//				"?specific <http://kmm.lboro.ac.uk/ecos/1.0#Skill> ?nodoskill ." +
-//				"?nodoskill rdf:Bag ?nodobag ." +
-//				"?nodobag ?p ?skillcontent ." +
-//				"?skillcontent <http://kmm.lboro.ac.uk/ecos/1.0#name> ?skill ." +
-//				"?skillcontent <http://kmm.lboro.ac.uk/ecos/1.0#level> ?skilllevel" +
-//				"}ORDER BY(?id)";
-		
 		
 		try {
 			queryEnterprise = URLEncoder.encode(queryEnterprise, "UTF-8");
-//			querySkills = URLEncoder.encode(querySkills, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		
 		queryEnterprise = "http://shannon.gsi.dit.upm.es/episteme/lmf/sparql/select?query="+queryEnterprise+"&output=json";
-//		querySkills = "http://shannon.gsi.dit.upm.es/episteme/lmf/sparql/select?query="+querySkills+"&output=json";
 		
 		JSONObject enterprises = getJson(queryEnterprise);
-//		JSONObject skills = getJson(querySkills);
 		
-		return enterprises;
-//		return compact2(enterprises, skills);
-			
+		return enterprises;			
 	}
 	
 	/**
@@ -226,17 +182,6 @@ public class JSONTreatment {
 	 * @throws JSONException 
 	 */
 	public static JSONArray getJSONSkills() throws JSONException{
-//		// Con las empresas de VULKA
-//		String querySkills = queryPrefix + "SELECT ?id ?skill WHERE {" +
-//		"?id <http://kmm.lboro.ac.uk/ecos/1.0#Specific> ?o ." +
-//		"?o <http://kmm.lboro.ac.uk/ecos/1.0#Skill> ?skills ." +
-//		"?skills rdf:Bag ?bag ." +
-//		"?bag ?p ?bagid ." +
-//		"?bagid <http://kmm.lboro.ac.uk/ecos/1.0#name> ?skill ." +
-//		"FILTER ( lang(?skill) = \"es\" )" +
-//		"}ORDER BY(?id)";
-		
-		// Con las empresas de INES
 		String querySkills = queryPrefix + "SELECT ?id ?skill ?skilllevel WHERE {" +
 				"?id <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://kmm.lboro.ac.uk/ecos/1.0#Enterprise> ." +
 				"?id <http://www.w3.org/2006/vcard/ns#VCard> ?vcard ." +
@@ -247,15 +192,6 @@ public class JSONTreatment {
 				"?skillcontent <http://kmm.lboro.ac.uk/ecos/1.0#name> ?skill ." +
 				"?skillcontent <http://kmm.lboro.ac.uk/ecos/1.0#level> ?skilllevel" +
 				"}";
-//		String querySkills = queryPrefix + "SELECT DISTINCT ?skill WHERE {" +
-//		"?id <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://kmm.lboro.ac.uk/ecos/1.0#Enterprise> ." +
-//		"?id <http://www.w3.org/2006/vcard/ns#VCard> ?vcard ." +
-//		"?id <http://kmm.lboro.ac.uk/ecos/1.0#Specific> ?specific ." +
-//		"?specific <http://kmm.lboro.ac.uk/ecos/1.0#Skill> ?nodoskill ." +
-//		"?nodoskill rdf:Bag ?nodobag ." +
-//		"?nodobag ?p ?skillcontent ." +
-//		"?skillcontent <http://kmm.lboro.ac.uk/ecos/1.0#name> ?skill ." +
-//		"}";
 
 		try {
 			querySkills = URLEncoder.encode(querySkills, "UTF-8");
@@ -274,15 +210,6 @@ public class JSONTreatment {
 	 * @throws JSONException
 	 */
 	public static JSONArray getOportunities() throws JSONException {
-//		Con los anteriores datos de VULKA
-//		String queryOportunities = queryPrefix + "SELECT ?name ?field WHERE {" +
-//				"?s ecos:name ?name ." +
-//				"?s gsi:companyReq ?req ." +
-//				"?req ecos:Preference ?pref1t ." +
-//				"?pref1t gsi:field ?field . " +
-//				"}";
-		
-		// Con INES
 		String queryOportunities = queryPrefix + "SELECT ?name ?req ?field ?weight WHERE {" +
 				"?s ecos:name ?name ." +
 				"?s gsi:companyReq ?req ." +
@@ -309,7 +236,6 @@ public class JSONTreatment {
 	 * @throws JSONException
 	 */
 	public static JSONArray getOportunities(String offer) throws JSONException {
-		// Con INES
 		String queryOportunities = queryPrefix + "SELECT ?req ?field ?weight WHERE {" +
 				"?s ecos:name \""+offer+"\" ." +
 				"?s gsi:companyReq ?req ." +
