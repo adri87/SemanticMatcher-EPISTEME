@@ -26,7 +26,7 @@ public class JSONTreatment {
 	 * @return 
 	 * 
 	 */
-	public static JSONObject treatment(){		
+	public JSONObject treatment(){		
 		String queryEnterprise = queryPrefix + "SELECT ?id ?name ?logo ?postalcode ?province ?address ?type ?summary WHERE {" +
 				"?id <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://kmm.lboro.ac.uk/ecos/1.0#Enterprise> ;" +
 				"   <http://www.w3.org/2006/vcard/ns#VCard> ?vcard ." +
@@ -52,7 +52,8 @@ public class JSONTreatment {
 			e.printStackTrace();
 		}
 		
-		queryEnterprise = "http://shannon.gsi.dit.upm.es/episteme/lmf/sparql/select?query="+queryEnterprise+"&output=json";
+//		queryEnterprise = "http://shannon.gsi.dit.upm.es/episteme/lmf/sparql/select?query="+queryEnterprise+"&output=json";
+		queryEnterprise = "http://minsky.gsi.dit.upm.es/episteme/tomcat/LMF/sparql/select?query="+queryEnterprise+"&output=json";
 		
 		JSONObject enterprises = getJson(queryEnterprise);
 		
@@ -64,7 +65,7 @@ public class JSONTreatment {
 	 * @param categorieRequired
 	 * @return
 	 */
-	public static JSONObject getJson(String query){
+	public JSONObject getJson(String query){
 		URL url;
 	    HttpURLConnection conn;
 	    BufferedReader rd;
@@ -92,7 +93,7 @@ public class JSONTreatment {
 	 * @param skillsCompany
 	 * @param enterprises
 	 */
-	public static void introduceSkillsToEnterprises(String id, JSONArray skillsCompany, JSONObject enterprises){
+	public void introduceSkillsToEnterprises(String id, JSONArray skillsCompany, JSONObject enterprises){
 		JSONArray array; 
 		String idComp = "";
 		try {
@@ -113,7 +114,7 @@ public class JSONTreatment {
 	 * @param skills
 	 * @return
 	 */
-	public static JSONObject compact(JSONObject enterprises, JSONObject skills){
+	public JSONObject compact(JSONObject enterprises, JSONObject skills){
 		JSONArray skillsCompany = new JSONArray();
 		String idComp = "";
 		try {
@@ -142,7 +143,7 @@ public class JSONTreatment {
 	 * @param skills
 	 * @return
 	 */
-	public static JSONObject compact2(JSONObject enterprises, JSONObject skills){
+	public JSONObject compact2(JSONObject enterprises, JSONObject skills){
 		JSONArray skillsCompany = new JSONArray();
 		JSONObject aux, auxVal, auxVal2;
 		String idComp = "";
@@ -181,7 +182,7 @@ public class JSONTreatment {
 	 * @return
 	 * @throws JSONException 
 	 */
-	public static JSONArray getJSONSkills() throws JSONException{
+	public JSONArray getJSONSkills() throws JSONException{
 		String querySkills = queryPrefix + "SELECT ?id ?skill ?skilllevel WHERE {" +
 				"?id <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://kmm.lboro.ac.uk/ecos/1.0#Enterprise> ." +
 				"?id <http://www.w3.org/2006/vcard/ns#VCard> ?vcard ." +
@@ -209,7 +210,7 @@ public class JSONTreatment {
 	 * @return
 	 * @throws JSONException
 	 */
-	public static JSONArray getOportunities() throws JSONException {
+	public JSONArray getOportunities() throws JSONException {
 		String queryOportunities = queryPrefix + "SELECT ?name ?req ?field ?weight WHERE {" +
 				"?s ecos:name ?name ." +
 				"?s gsi:companyReq ?req ." +
@@ -224,7 +225,9 @@ public class JSONTreatment {
 			e.printStackTrace();
 		}
 
-		queryOportunities = "http://shannon.gsi.dit.upm.es/episteme/lmf/sparql/select?query="+queryOportunities+"&output=json";
+//		queryOportunities = "http://shannon.gsi.dit.upm.es/episteme/lmf/sparql/select?query="+queryOportunities+"&output=json";
+		queryOportunities = "http://minsky.gsi.dit.upm.es/episteme/tomcat/LMF/sparql/select?query="+queryOportunities+"&output=json";
+		
 		JSONObject oportunities = getJson(queryOportunities);
 		
 		return oportunities.getJSONObject("results").getJSONArray("bindings");		
@@ -235,7 +238,7 @@ public class JSONTreatment {
 	 * @return
 	 * @throws JSONException
 	 */
-	public static JSONArray getOportunities(String offer) throws JSONException {
+	public JSONArray getOportunities(String offer) throws JSONException {
 		String queryOportunities = queryPrefix + "SELECT ?req ?field ?weight WHERE {" +
 				"?s ecos:name \""+offer+"\" ." +
 				"?s gsi:companyReq ?req ." +
@@ -250,7 +253,9 @@ public class JSONTreatment {
 			e.printStackTrace();
 		}
 
-		queryOportunities = "http://shannon.gsi.dit.upm.es/episteme/lmf/sparql/select?query="+queryOportunities+"&output=json";
+//		queryOportunities = "http://shannon.gsi.dit.upm.es/episteme/lmf/sparql/select?query="+queryOportunities+"&output=json";
+		queryOportunities = "http://minsky.gsi.dit.upm.es/episteme/tomcat/LMF/sparql/select?query="+queryOportunities+"&output=json";
+		
 		JSONObject oportunities = getJson(queryOportunities);
 		
 		return oportunities.getJSONObject("results").getJSONArray("bindings");		

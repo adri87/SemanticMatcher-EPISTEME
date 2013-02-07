@@ -15,12 +15,11 @@ public class RdfConstructor {
 	 * @param enterprises
 	 * @return
 	 */
-	public static String rdfEnterprises(File enterprises){
-		String pathFileEnt = "";
+	public void rdfEnterprises(File enterprises, JSONTreatment jt){
 		JSONArray skills = new JSONArray();
 		String id ="", idComp = "";
         try {
-        	skills = JSONTreatment.getJSONSkills();
+        	skills = jt.getJSONSkills();
     		enterprises.createNewFile();
     		FileWriter out = new FileWriter(enterprises);
     		out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
@@ -49,25 +48,22 @@ public class RdfConstructor {
             out.write("</ecos:Enterprise>\n");
             out.write("</rdf:RDF>");
             out.close();       
-            pathFileEnt = enterprises.getAbsolutePath();
 		} catch (JSONException e1) {
 			e1.printStackTrace();
         } catch (IOException e) {
         	e.printStackTrace();
         }
-		return pathFileEnt;
 	}
 	
 	/**
 	 * @param offer
 	 * @return
 	 */
-	public static String rdfOffer(File offer){
-		String pathFileOffer = "";
+	public void rdfOffer(File offer, JSONTreatment jt){
 		JSONArray oportunities = new JSONArray();
 		String namComp = "";
         try {
-    		oportunities = JSONTreatment.getOportunities();
+    		oportunities = jt.getOportunities();
     		offer.createNewFile();
     		FileWriter out = new FileWriter(offer);
     		out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
@@ -109,14 +105,11 @@ public class RdfConstructor {
             }
             out.write("</rdf:RDF>");
             out.close();        
-            pathFileOffer = offer.getAbsolutePath();
 		} catch (JSONException e1) {
 			e1.printStackTrace();            
         } catch (IOException e) {
         	e.printStackTrace();
         }
-                
-		return pathFileOffer;		
 	}
 	
 
@@ -124,7 +117,7 @@ public class RdfConstructor {
 	 * @param s
 	 * @return
 	 */
-	public static String transform (String s){
+	public String transform (String s){
 		return s.replace(" ", "_").replace(",", "").replace("(", "").replace(")","").replace("/", "_").replace("&", "_").replace("®", "").replace(":", "").replace("-*", "").replace("…", "");
 	}
 }

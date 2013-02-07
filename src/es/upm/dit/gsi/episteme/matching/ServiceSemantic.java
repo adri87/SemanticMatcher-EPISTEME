@@ -15,7 +15,7 @@ public class ServiceSemantic {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public static JSONObject introduceSemantic(JSONObject json, JSONObject semanticResult, String oferta){
+	public JSONObject introduceSemantic(JSONObject json, JSONObject semanticResult, String oferta){
 		String[] cajas = {"caja1","caja2","caja3","caja4","caja5","caja6","caja7", "caja8","caja9"};
 		JSONArray array;
 		try {

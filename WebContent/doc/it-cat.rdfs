@@ -10,6 +10,7 @@ xml:base="http://kmm.lboro.ac.uk/ecos/1.0#">
 </rdfs:subClassOf>
 </rdfs:Class>
 
+
 <rdfs:Class rdf:ID="Seguridad_de_la_información_gestionada">
 <rdfs:subClassOf rdf:resource="#Telecomunicaciones"/>
 </rdfs:Class><rdfs:Class rdf:ID="Ontologías_para_descripción_de_interacción_usuarios_interfaces_y_capacidades_de_los_sistemas.">

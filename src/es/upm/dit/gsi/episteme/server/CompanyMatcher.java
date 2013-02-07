@@ -38,6 +38,17 @@ public class CompanyMatcher extends HttpServlet {
     	String a =getServletContext().getRealPath("/");
     	return a;
     }
+    
+    /**
+     * @return 
+     */
+    public void refresh(){
+    	JSONTreatment jt = new JSONTreatment();
+    	RdfConstructor rc = new RdfConstructor();
+    	String base = getPathFile();
+    	File f = new File (base + "doc/enterprises.rdf");
+    	rc.rdfEnterprises(f, jt);
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -71,23 +82,21 @@ public class CompanyMatcher extends HttpServlet {
 		
 		// Declaring variables
 		String baseUrl = getServletContext().getRealPath("/");
+		RdfConstructor rdc = new RdfConstructor();
+		ServiceSemantic sm = new ServiceSemantic();
+		SemanticSemMF sSem = new SemanticSemMF();
+		JSONTreatment jt = new JSONTreatment();
 		
 		// write rdf advertising/offer and enterprises
-		File fileOff = new File("/home/adri/Descargas/offers.rdf");
-//	    File fileOff = new File(getServletContext().getRealPath("/temp") + "/prove" + Long.toString(System.nanoTime()) + ".rdf");
-	    String pathFileOffer = RdfConstructor.rdfOffer(fileOff);	         
-	        	
-//	    File fileEnt = new File("/home/adri/Descargas/enterprises.rdf");
-////	    File fileEnt = new File(getServletContext().getRealPath("/temp") + "/ent" + Long.toString(System.nanoTime()) + ".rdf");
-//	    String pathFileEnt = RdfConstructor.rdfEnterprises(fileEnt);
-		
-        //execute semantic matching (using semmf)
-//		String pathFileOffer = baseUrl + "doc/offers.rdf";
+		File fileOff = new File(baseUrl + "doc/offers.rdf");
+	    rdc.rdfOffer(fileOff, jt);
 		String pathFileEnt = baseUrl + "doc/enterprises.rdf";
-        JSONObject semanticResult = SemanticSemMF.calMatching(baseUrl, pathFileEnt, pathFileOffer, oferta);
+				
+        //execute semantic matching (using semmf)
+        JSONObject semanticResult = sSem.calMatching(baseUrl, pathFileEnt, fileOff.getAbsolutePath(), oferta, jt, rdc);
         
 		// introduce semantic matching 
-		JSONObject responseJson = ServiceSemantic.introduceSemantic(JSONTreatment.treatment(), semanticResult, oferta);
+		JSONObject responseJson = sm.introduceSemantic(jt.treatment(), semanticResult, oferta);
 				
 		// return output
 		response.setContentType("application/json");
@@ -96,4 +105,5 @@ public class CompanyMatcher extends HttpServlet {
 		pw.println(responseJson);
 		pw.close();
 	}
+	
 }

@@ -45,7 +45,8 @@ public class SemanticSemMF {
 	 * @throws IOException
 	 * @throws JSONException 
 	 */
-	public static JSONObject calMatching(String baseURL, String pathFileEnt,String pathFileOffer, String oferta) throws MalformedURLException, IOException, JSONException {
+	public JSONObject calMatching(String baseURL, String pathFileEnt,String pathFileOffer, String oferta, JSONTreatment jt, RdfConstructor rc) 
+			throws MalformedURLException, IOException, JSONException {
 		String filePathServiceMD = baseURL + "doc/serviceMD.n3";
 		Model serviceMD = createServiceMD(baseURL, pathFileEnt, pathFileOffer,oferta);
 		writeServiceMDtoFile (serviceMD, filePathServiceMD, "N3");	     
@@ -60,14 +61,14 @@ public class SemanticSemMF {
 		}
 		
 		printMatchingResult(mr);  // Para imprimir los resultados por consola
-		return getSemanticSemMF(mr, oferta);
+		return getSemanticSemMF(mr, oferta, jt, rc);
 	}
 	
 
 	/**
 	 * see tutorial: how to create a matching description (included in SemMF distribution)
 	 */ 
-	public static Model createServiceMD (String baseURL, String pathFileEnt, String pathFileOffer, String oferta) {
+	public Model createServiceMD (String baseURL, String pathFileEnt, String pathFileOffer, String oferta) {
 		
 		Model m = ModelFactory.createDefaultModel();
 		
@@ -155,7 +156,7 @@ public class SemanticSemMF {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public static void printMatchingResult (MatchingResult mr) {
+	public void printMatchingResult (MatchingResult mr) {
 		
 		System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 		System.out.println("Query Graph: " + mr.getFirst().getQueryGraphEntryNode().getURI());
@@ -218,12 +219,12 @@ public class SemanticSemMF {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public static JSONObject getSemanticSemMF (MatchingResult mr, String oferta) throws JSONException {
-		JSONArray offerStructure = JSONTreatment.getOportunities(oferta);
+	public JSONObject getSemanticSemMF (MatchingResult mr, String oferta, JSONTreatment jt, RdfConstructor rc) throws JSONException {
+		JSONArray offerStructure = jt.getOportunities(oferta);
 		HashMap<String, String> relationStructureOffer = new HashMap<String, String>();
 		for (int i = 0; i < offerStructure.length(); i++) {
 			String req = offerStructure.getJSONObject(i).getJSONObject("req").getString("value");
-			String field = RdfConstructor.transform(offerStructure.getJSONObject(i).getJSONObject("field").getString("value"));
+			String field = rc.transform(offerStructure.getJSONObject(i).getJSONObject("field").getString("value"));
 			relationStructureOffer.put(field, req);
 		}
 		
@@ -268,7 +269,7 @@ public class SemanticSemMF {
 	 * @param filePath
 	 * @param lang
 	 */
-	private static void writeServiceMDtoFile(Model m, String filePath, String lang) {
+	private void writeServiceMDtoFile(Model m, String filePath, String lang) {
 		
 		m.setNsPrefix("semmf", MD.NS);
 		m.setNsPrefix("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
