@@ -26,6 +26,7 @@ import de.fuberlin.wiwiss.semmf.result.NodeMatchingResult;
 import de.fuberlin.wiwiss.semmf.result.PropertyMatchingResult;
 import de.fuberlin.wiwiss.semmf.vocabulary.MD;
 import es.upm.dit.gsi.episteme.json.JSONTreatment;
+import es.upm.dit.gsi.episteme.json.JSONTreatmentOld;
 import es.upm.dit.gsi.episteme.rdfs.RdfConstructor;
 
 /**
@@ -45,7 +46,7 @@ public class SemanticSemMF {
 	 * @throws IOException
 	 * @throws JSONException 
 	 */
-	public JSONObject calMatching(String baseURL, String pathFileEnt,String pathFileOffer, String oferta, JSONTreatment jt, RdfConstructor rc) 
+	public JSONArray calMatching(String baseURL, String pathFileEnt,String pathFileOffer, String oferta, JSONTreatment jt) 
 			throws MalformedURLException, IOException, JSONException {
 		String filePathServiceMD = baseURL + "doc/serviceMD.n3";
 		Model serviceMD = createServiceMD(baseURL, pathFileEnt, pathFileOffer,oferta);
@@ -60,8 +61,8 @@ public class SemanticSemMF {
         	outputFile.delete();        	 
 		}
 		
-		printMatchingResult(mr);  // Para imprimir los resultados por consola
-		return getSemanticSemMF(mr, oferta, jt, rc);
+//		printMatchingResult(mr);  // Para imprimir los resultados por consola
+		return getSemanticResult(mr, jt);
 	}
 	
 
@@ -218,8 +219,16 @@ public class SemanticSemMF {
 		mr.setToFirst();
 	}
 	
+	/**
+	 * @param mr
+	 * @param oferta
+	 * @param jt
+	 * @param rc
+	 * @return
+	 * @throws JSONException
+	 */
 	@SuppressWarnings("rawtypes")
-	public JSONObject getSemanticSemMF (MatchingResult mr, String oferta, JSONTreatment jt, RdfConstructor rc) throws JSONException {
+	public JSONObject getSemanticSemMF (MatchingResult mr, String oferta, JSONTreatmentOld jt, RdfConstructor rc) throws JSONException {
 		JSONArray offerStructure = jt.getOportunities(oferta);
 		HashMap<String, String> relationStructureOffer = new HashMap<String, String>();
 		for (int i = 0; i < offerStructure.length(); i++) {
@@ -227,6 +236,7 @@ public class SemanticSemMF {
 			String field = rc.transform(offerStructure.getJSONObject(i).getJSONObject("field").getString("value"));
 			relationStructureOffer.put(field, req);
 		}
+		System.out.println(relationStructureOffer.toString());
 		
 		JSONObject semanticResult = new JSONObject();
 		while (mr.hasNext()) {
@@ -243,15 +253,17 @@ public class SemanticSemMF {
 					NodeMatchingResult nmr = (NodeMatchingResult) itN.next();
 					List propertyList = nmr.getPropertyMatchingResultList();
 					for (Iterator itP = propertyList.iterator(); itP.hasNext();) {
-//						JSONObject  aux = new JSONObject(); //En caso de introducir semantica con el método introduceSemantic2
+						JSONObject  aux = new JSONObject(); //En caso de introducir semantica con el método introduceSemantic2
 						PropertyMatchingResult pmr = (PropertyMatchingResult) itP.next();
 						String req = relationStructureOffer.get(pmr.getQueryPropVal().toString().substring(32));
+						System.out.println("QUE ES ESTOOO:");
+						System.out.println(req);
 						if (req	!= null){
 							if (store.get(req) != null)
 								store.put(req, (store.get(req)+nmr.getSimilarity())/2);
 							else
 								store.put(req, nmr.getSimilarity());
-//							aux.put("value", store.get(req)); // Ver nota de aux
+							aux.put("value", store.get(req)); // Ver nota de aux
 							skills.put(req, store.get(req));
 						}
 					}
@@ -262,6 +274,31 @@ public class SemanticSemMF {
 		mr.setToFirst();
 		
 		return semanticResult;
+	}
+	
+	/**
+	 * @param mr
+	 * @param oferta
+	 * @param jt
+	 * @param rc
+	 * @return
+	 * @throws JSONException 
+	 */
+	public JSONArray getSemanticResult (MatchingResult mr, JSONTreatment jt) throws JSONException {
+		JSONArray response = jt.treatment();
+		
+		while (mr.hasNext()) {
+			GraphMatchingResult gmr = mr.next();
+			String id = gmr.getResGraphEntryNode().getURI().toString().substring(28);
+			float semanticResult = gmr.getSimilarity(); 
+			for (int i = 0; i < response.length(); i++) {
+				if (id.equals(response.getJSONObject(i).get("id").toString()))
+						response.getJSONObject(i).put("semantic", semanticResult);
+			}
+		}		
+		mr.setToFirst();
+		
+		return response;
 	}
 	
 	/**

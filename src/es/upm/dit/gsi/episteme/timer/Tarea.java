@@ -19,7 +19,7 @@ public class Tarea extends TimerTask implements ServletContextListener {
     public void contextInitialized(ServletContextEvent evt) {
         // Iniciamos el timer
         timer = new Timer();
-        timer.schedule(this, 0, 60*60*1000);  // Ejemplo: Cada 10 minutos
+        timer.schedule(this, 0, 15*1000);  // Ejemplo: Cada 10 minutos
     }
  
     /* (non-Javadoc)
@@ -49,6 +49,9 @@ public class Tarea extends TimerTask implements ServletContextListener {
      */
     public void run() {
     	CompanyMatcher cm = new CompanyMatcher();
-    	cm.refresh();
+    	try {
+			cm.refresh();
+		} catch (Exception e) {
+		}
     }    
 }

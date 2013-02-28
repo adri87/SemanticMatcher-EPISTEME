@@ -6,17 +6,16 @@ import java.io.IOException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import es.upm.dit.gsi.episteme.json.JSONTreatment;
+import es.upm.dit.gsi.episteme.json.JSONTreatmentOld;
 
-public class RdfConstructor {
+public class RdfConstructorOld {
 	
 	/**
 	 * @param enterprises
 	 * @return
 	 */
-	public void rdfEnterprises(File enterprises, JSONTreatment jt){
+	public void rdfEnterprises(File enterprises, JSONTreatmentOld jt){
 		JSONArray skills = new JSONArray();
 		String id ="", idComp = "";
         try {
@@ -60,10 +59,11 @@ public class RdfConstructor {
 	 * @param offer
 	 * @return
 	 */
-	public void rdfOffer(File offer, JSONTreatment jt, String search, int entity){
-		JSONObject oportunitie = new JSONObject();
+	public void rdfOffer(File offer, JSONTreatmentOld jt){
+		JSONArray oportunities = new JSONArray();
+		String namComp = "";
         try {
-    		oportunitie = jt.getOportunitie(search);
+    		oportunities = jt.getOportunities();
     		offer.createNewFile();
     		FileWriter out = new FileWriter(offer);
     		out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
@@ -72,26 +72,37 @@ public class RdfConstructor {
             out.write("xmlns:cr=\"http://example.org/CategoriesRequired.rdfs#\"\n");
             out.write("xmlns:skill=\"http://kmm.lboro.ac.uk/ecos/1.0#\"\n");
             out.write("xml:base=\"http://example.org/CategoriesRequired.rdfs#\">\n\r");
-           	String nameOffer = oportunitie.getString("name");
-        	out.write("<cr:CategoriesRequired rdf:ID=\""+nameOffer+"\">\n\r");
-            out.write("<cr:hasCategorieDetails>\n");
-            out.write("<cr:CategorieDetails>\n\r");
-            JSONArray skills = oportunitie.getJSONArray("result").getJSONObject(entity).getJSONArray("semantic");
-            for (int i = 0; i < skills.length(); i++) {
+            for (int i=0; i<oportunities.length(); i++){
+            	String nameOffer = oportunities.getJSONObject(i).getJSONObject("name").getString("value").replace(" ", "_").replace(",", "");
+                if (nameOffer.compareTo(namComp) != 0){
+                	if (i !=0) {
+                        out.write("</cr:CategorieDetails>\n\r");
+                        out.write("</cr:hasCategorieDetails>\n\r");
+                        out.write("</cr:CategoriesRequired>\n");
+                	}
+                	out.write("<cr:CategoriesRequired rdf:ID=\""+nameOffer+"\">\n\r");
+                	out.write("<cr:hasDetails>\n");
+                    out.write("<cr:Details>\n");
+                    out.write("<cr:endDate>2012-08-31</cr:endDate>\n");
+                    out.write("<cr:startDate>2012-07-01</cr:startDate>\n");
+                    out.write("</cr:Details>\n");		
+                    out.write("</cr:hasDetails>\n\r");
+                    out.write("<cr:hasCategorieDetails>\n");
+                    out.write("<cr:CategorieDetails>\n\r");
+                } 
                 out.write("<cr:requiredCompetence>\n");
-                out.write("<skill:"+transform(skills.getJSONObject(i).getString("skill"))+">\n");
-                String level = skills.getJSONObject(i).getString("level");
-                if (level.equals("basic"))	level = "Intermediate";
-                else if (level.equals("expert"))	level = "Expert";
-                else if (level.equals("advanced"))	level = "Advanced";
-                out.write("<skill:competenceLevel rdf:resource=\"http://kmm.lboro.ac.uk/ecos/1.0#"+level+"\"/>\n");
-//                out.write("<skill:competenceLevel rdf:resource=\"http://kmm.lboro.ac.uk/ecos/1.0#"+skills.getJSONObject(i).getString("level").replace(" ", "_").replace(",", "")+"\"/>\n");
-                out.write("</skill:"+transform(skills.getJSONObject(i).getString("skill"))+">\n");
+                out.write("<skill:"+transform(oportunities.getJSONObject(i).getJSONObject("field").getString("value"))+">\n");
+                out.write("<skill:competenceLevel rdf:resource=\"http://kmm.lboro.ac.uk/ecos/1.0#"+oportunities.getJSONObject(i).getJSONObject("weight").getString("value").replace(" ", "_").replace(",", "")+"\"/>\n");
+                out.write("</skill:"+transform(oportunities.getJSONObject(i).getJSONObject("field").getString("value"))+">\n");
                 out.write("</cr:requiredCompetence>\n\r"); 
+                namComp = nameOffer;
+                if (i == oportunities.length()-1) {
+                	 out.write("</cr:CategorieDetails>\n\r");
+                     out.write("</cr:hasCategorieDetails>\n\r");
+                     out.write("</cr:CategoriesRequired>\n");        	
+                }
+
             }
-            out.write("</cr:CategorieDetails>\n\r");
-            out.write("</cr:hasCategorieDetails>\n\r");
-            out.write("</cr:CategoriesRequired>\n");   
             out.write("</rdf:RDF>");
             out.close();        
 		} catch (JSONException e1) {
