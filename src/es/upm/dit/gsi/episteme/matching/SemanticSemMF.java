@@ -226,17 +226,17 @@ public class SemanticSemMF {
 	 */
 	public JSONArray getSemanticResult (MatchingResult mr, JSONTreatment jt) throws JSONException {
 		JSONArray response = jt.treatment();
+		for (int i = 0; i < response.length(); i++) {
+			response.getJSONObject(i).put("semantic", 0);
+		}
 		
 		while (mr.hasNext()) {
 			GraphMatchingResult gmr = mr.next();
 			String id = gmr.getResGraphEntryNode().getURI().toString().substring(28);
 			float semanticResult = gmr.getSimilarity();
 			for (int i = 0; i < response.length(); i++) {
-				if (id.equals(response.getJSONObject(i).get("id").toString())) {
+				if (id.equals(response.getJSONObject(i).get("id").toString())) 
 					response.getJSONObject(i).put("semantic", semanticResult);
-				} else {
-					response.getJSONObject(i).put("semantic", 0);
-				}
 			}
 		}		
 		mr.setToFirst();

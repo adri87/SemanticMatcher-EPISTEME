@@ -71,11 +71,8 @@ public class JSONTreatment {
 	 */
 	public JSONObject getOportunitieWithJSON(String offer) throws JSONException {
 		
-		
-		offer = offer.replace("\\", "").replace("\",\"", ",").replace("\"\"", "\"").replace("\"{", "{").replace("}\"", "}");
 		JSONObject jo = new JSONObject(offer);
-		JSONArray oportunitie = jo.getJSONArray("episteme.search." + getNameOffer(offer));
-		
+		JSONArray oportunitie = jo.getJSONArray("episteme.search." + getNameOffer(offer));		
 		
 		return oportunitie.getJSONObject(0);
 	}
@@ -160,7 +157,7 @@ public class JSONTreatment {
 		JSONArray filter = new JSONArray();
 		for (int j = 0; j < object.length(); j++) {
 			JSONObject enterprise = object.getJSONObject(j);
-			if (enterprise.getDouble("weight") != 0)
+			if (enterprise.getDouble("weight") <= 0.5)
 				filter.put(enterprise);
 		}
 		return filter;

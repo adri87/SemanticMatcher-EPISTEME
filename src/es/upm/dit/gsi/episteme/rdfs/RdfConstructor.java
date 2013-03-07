@@ -81,9 +81,7 @@ public class RdfConstructor {
                 out.write("<cr:requiredCompetence>\n");
                 String aux = skills.getJSONObject(i).getString("skill");
         		byte[] bytes = aux.getBytes("ISO-8859-1");
-        		String skillaux = new String(bytes, "UTF-8");
-        		byte[] bytes2 = skillaux.getBytes("ISO-8859-1");
-        		String skill = new String(bytes2, "UTF-8");
+        		String skill = new String(bytes, "UTF-8");
                 out.write("<skill:"+transform(skill)+">\n");
                 String level = skills.getJSONObject(i).getString("level");
                 if (level.equals("basic"))	level = "Intermediate";

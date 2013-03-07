@@ -92,9 +92,8 @@ public class CompanyMatcher extends HttpServlet {
 		
 		// write rdf advertising/offer and enterprises
 		File fileOff = new File(baseUrl + "/doc/o3.rdf");
-	    rdc.rdfOffer(fileOff, jt, oferta, entity);
-	    String pathFileEnt = baseUrl + "/doc/enterprises.rdf";
-		
+	    rdc.rdfOffer(fileOff, jt, oferta, entity); 
+	    String pathFileEnt = "/home/adri/enterprises.rdf";
 		
         //execute semantic matching (using semmf)
 		JSONArray semanticResult = sSem.calMatching(baseUrl, pathFileEnt, fileOff.getAbsolutePath(), jt.getNameOffer(oferta), jt);
@@ -112,7 +111,6 @@ public class CompanyMatcher extends HttpServlet {
 			}	
 		}
 		req = jt.filterSemantic(req);
-		
 		
 		// return output
 		response.setContentType("application/json");
