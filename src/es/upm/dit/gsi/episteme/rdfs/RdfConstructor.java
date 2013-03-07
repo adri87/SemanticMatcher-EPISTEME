@@ -63,7 +63,7 @@ public class RdfConstructor {
 	public void rdfOffer(File offer, JSONTreatment jt, String search, int entity){
 		JSONObject oportunitie = new JSONObject();
         try {
-    		oportunitie = jt.getOportunitie(search);
+        	oportunitie = jt.getOportunitieWithJSON(search);
     		offer.createNewFile();
     		FileWriter out = new FileWriter(offer);
     		out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
@@ -79,14 +79,18 @@ public class RdfConstructor {
             JSONArray skills = oportunitie.getJSONArray("result").getJSONObject(entity).getJSONArray("semantic");
             for (int i = 0; i < skills.length(); i++) {
                 out.write("<cr:requiredCompetence>\n");
-                out.write("<skill:"+transform(skills.getJSONObject(i).getString("skill"))+">\n");
+                String aux = skills.getJSONObject(i).getString("skill");
+        		byte[] bytes = aux.getBytes("ISO-8859-1");
+        		String skillaux = new String(bytes, "UTF-8");
+        		byte[] bytes2 = skillaux.getBytes("ISO-8859-1");
+        		String skill = new String(bytes2, "UTF-8");
+                out.write("<skill:"+transform(skill)+">\n");
                 String level = skills.getJSONObject(i).getString("level");
                 if (level.equals("basic"))	level = "Intermediate";
                 else if (level.equals("expert"))	level = "Expert";
                 else if (level.equals("advanced"))	level = "Advanced";
                 out.write("<skill:competenceLevel rdf:resource=\"http://kmm.lboro.ac.uk/ecos/1.0#"+level+"\"/>\n");
-//                out.write("<skill:competenceLevel rdf:resource=\"http://kmm.lboro.ac.uk/ecos/1.0#"+skills.getJSONObject(i).getString("level").replace(" ", "_").replace(",", "")+"\"/>\n");
-                out.write("</skill:"+transform(skills.getJSONObject(i).getString("skill"))+">\n");
+                out.write("</skill:"+transform(skill)+">\n");
                 out.write("</cr:requiredCompetence>\n\r"); 
             }
             out.write("</cr:CategorieDetails>\n\r");

@@ -55,13 +55,37 @@ public class JSONTreatment {
 	 * @return
 	 * @throws JSONException
 	 */
-	public JSONObject getOportunitie(String offer) throws JSONException {
+	public JSONObject getOportunitieWithName(String offer) throws JSONException {
 
 		String queryOportunitie = "http://minsky.gsi.dit.upm.es/episteme/tomcat/LMF/config/data/episteme.search." + offer;	
 		JSONObject jo = getJson(queryOportunitie);
 		JSONArray oportunitie = new JSONArray(jo.getJSONArray("episteme.search." + offer).toString().replace("[\"", "[").replace("\"]", "]").replace("\\\"", "\"").replace("\",\"", ",").replace("\\", "\""));
 		
 		return oportunitie.getJSONObject(0);
+	}
+	
+	/**
+	 * @param offer
+	 * @return
+	 * @throws JSONException
+	 */
+	public JSONObject getOportunitieWithJSON(String offer) throws JSONException {
+		
+		
+		offer = offer.replace("\\", "").replace("\",\"", ",").replace("\"\"", "\"").replace("\"{", "{").replace("}\"", "}");
+		JSONObject jo = new JSONObject(offer);
+		JSONArray oportunitie = jo.getJSONArray("episteme.search." + getNameOffer(offer));
+		
+		
+		return oportunitie.getJSONObject(0);
+	}
+	
+	/**
+	 * @param offer
+	 * @return
+	 */
+	public String getNameOffer(String offer) {
+		return offer.subSequence(2, offer.indexOf("\":")).toString().substring(16);
 	}
 	
 	/**
@@ -73,19 +97,7 @@ public class JSONTreatment {
 		String queryEnterprise = queryPrefix + "SELECT ?id ?name ?logo ?postalcode ?province ?address ?type ?description WHERE {" +
 				"?id <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://kmm.lboro.ac.uk/ecos/1.0#Enterprise> ;" +
 				"   <http://www.w3.org/2006/vcard/ns#VCard> ?vcard ." +
-				"OPTIONAL{" +
-				"?vcard <http://www.w3.org/2006/vcard/ns#logo> ?logo ." +
-				"}" +
 				"?vcard <http://www.w3.org/2006/vcard/ns#fn> ?name ;" +
-				"       <http://www.w3.org/2006/vcard/ns#adr> ?direccionnodo ." +
-				"?direccionnodo <http://www.w3.org/2006/vcard/ns#postal-code> ?postalcode ;" +
-				"               <http://www.w3.org/2006/vcard/ns#locality> ?province ;" +
-				"               <http://www.w3.org/2006/vcard/ns#street-address> ?address ." +
-				"?vcard <http://www.w3.org/2006/vcard/ns#org> ?org ." +
-				"?org <http://www.w3.org/2006/vcard/ns#organisation-unit> ?type ." +
-				"?id <http://kmm.lboro.ac.uk/ecos/1.0#Specific> ?specific ." +
-				"?specific <http://kmm.lboro.ac.uk/ecos/1.0#Plan> ?plan ." +
-				"?plan <http://kmm.lboro.ac.uk/ecos/1.0#detail> ?description" +
 		"}";
 
 		
@@ -104,14 +116,7 @@ public class JSONTreatment {
 			JSONObject enterprise = new JSONObject();
 			JSONObject auxObj = aux.getJSONObject(i);
 			enterprise.put("id", auxObj.getJSONObject("id").get("value").toString().substring(28));
-//			if (auxObj.getJSONObject("logo") != null)
-//				enterprise.put("logo", auxObj.getJSONObject("logo").get("value"));
-			enterprise.put("type", auxObj.getJSONObject("type").get("value"));
 			enterprise.put("name", auxObj.getJSONObject("name").get("value"));
-			enterprise.put("description", auxObj.getJSONObject("description").get("value"));
-			enterprise.put("postalcode", auxObj.getJSONObject("postalcode").get("value"));
-			enterprise.put("address", auxObj.getJSONObject("address").get("value"));
-			enterprise.put("province", auxObj.getJSONObject("province").get("value"));
 			enterprises.put(enterprise);
 		}
 		
@@ -144,5 +149,20 @@ public class JSONTreatment {
 	    	e.printStackTrace();
 		}
 		return json;
+	}
+	
+	/**
+	 * @param object
+	 * @return
+	 * @throws JSONException 
+	 */
+	public JSONArray filterSemantic (JSONArray object) throws JSONException {
+		JSONArray filter = new JSONArray();
+		for (int j = 0; j < object.length(); j++) {
+			JSONObject enterprise = object.getJSONObject(j);
+			if (enterprise.getDouble("weight") != 0)
+				filter.put(enterprise);
+		}
+		return filter;
 	}
 }

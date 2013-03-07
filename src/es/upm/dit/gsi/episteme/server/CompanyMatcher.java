@@ -78,38 +78,42 @@ public class CompanyMatcher extends HttpServlet {
 	 * 
 	 */
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, JSONException {
-		// Extract the parameters of the queryç
-		String oferta = request.getParameter("offer").replace(" ", "_");
-		int entity = Integer.parseInt(request.getParameter("entity"));
-		JSONArray req = new JSONArray(request.getParameter("json"));
-		
+
 		// Declaring variables
 		String baseUrl = getServletContext().getRealPath("/");
 		RdfConstructor rdc = new RdfConstructor();
 		SemanticSemMF sSem = new SemanticSemMF();
 		JSONTreatment jt = new JSONTreatment();
 		
+		// Extract the parameters of the query
+		String oferta = request.getParameter("offer");
+		int entity = Integer.parseInt(request.getParameter("entity"));
+		JSONArray req = new JSONArray(request.getParameter("json"));
+		
 		// write rdf advertising/offer and enterprises
-		File fileOff = new File("/home/adri/o3.rdf");
+		File fileOff = new File(baseUrl + "/doc/o3.rdf");
 	    rdc.rdfOffer(fileOff, jt, oferta, entity);
-		String pathFileEnt = baseUrl + "/doc/enterprises.rdf";
+	    String pathFileEnt = baseUrl + "/doc/enterprises.rdf";
 		
 		
         //execute semantic matching (using semmf)
-		JSONArray semanticResult = sSem.calMatching(baseUrl, pathFileEnt, fileOff.getAbsolutePath(), oferta, jt);
+		JSONArray semanticResult = sSem.calMatching(baseUrl, pathFileEnt, fileOff.getAbsolutePath(), jt.getNameOffer(oferta), jt);
 		
 		// introduce semantic matching
 		for (int i = 0; i < req.length(); i++) {
 			JSONObject enterprise = req.getJSONObject(i);
 			String id = enterprise.getJSONArray("name").getString(0);
 			for (int j = 0; j < semanticResult.length(); j++) {
-				if (id.equals(semanticResult.getJSONObject(j).get("name"))){
+				JSONObject enterprisesCache = semanticResult.getJSONObject(j);
+				if (id.equals(enterprisesCache.get("name"))){
 					double semanticValue = semanticResult.getJSONObject(j).getDouble("semantic");
 					enterprise.put("weight", semanticValue);
-				}
+				} 
 			}	
 		}
-				
+		req = jt.filterSemantic(req);
+		
+		
 		// return output
 		response.setContentType("application/json");
 		response.addHeader("Access-Control-Allow-Origin","*");

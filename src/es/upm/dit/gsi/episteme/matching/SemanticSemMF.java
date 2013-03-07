@@ -4,13 +4,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.HashMap;
+
 import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.hp.hpl.jena.rdf.model.Bag;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -26,8 +25,6 @@ import de.fuberlin.wiwiss.semmf.result.NodeMatchingResult;
 import de.fuberlin.wiwiss.semmf.result.PropertyMatchingResult;
 import de.fuberlin.wiwiss.semmf.vocabulary.MD;
 import es.upm.dit.gsi.episteme.json.JSONTreatment;
-import es.upm.dit.gsi.episteme.json.JSONTreatmentOld;
-import es.upm.dit.gsi.episteme.rdfs.RdfConstructor;
 
 /**
  * 
@@ -108,7 +105,7 @@ public class SemanticSemMF {
 		pmds.add(pmd_skill);
 		pmd_skill.addProperty(RDF.type, MD.PropertyMatchingDescription);
 		pmd_skill.addProperty(MD.label, "skill");
-		pmd_skill.addProperty(MD.weight, "0.65");
+		pmd_skill.addProperty(MD.weight, "0.6");
 		pmd_skill.addProperty(MD.queryPropURI, RDF.type);
 		pmd_skill.addProperty(MD.resPropURI, RDF.type);
 		pmd_skill.addProperty(MD.reverseMatching, "false");
@@ -133,7 +130,7 @@ public class SemanticSemMF {
 		pmds.add(pmd_skilllevel);
 		pmd_skilllevel.addProperty(RDF.type, MD.PropertyMatchingDescription);
 		pmd_skilllevel.addProperty(MD.label, "skill level");
-		pmd_skilllevel.addProperty(MD.weight, "0.35");
+		pmd_skilllevel.addProperty(MD.weight, "0.4");
 		pmd_skilllevel.addProperty(MD.queryPropURI, "http://kmm.lboro.ac.uk/ecos/1.0#competenceLevel");
 		pmd_skilllevel.addProperty(MD.resPropURI, "http://kmm.lboro.ac.uk/ecos/1.0#competenceLevel");
 		pmd_skilllevel.addProperty(MD.reverseMatching, "false");
@@ -225,63 +222,6 @@ public class SemanticSemMF {
 	 * @param jt
 	 * @param rc
 	 * @return
-	 * @throws JSONException
-	 */
-	@SuppressWarnings("rawtypes")
-	public JSONObject getSemanticSemMF (MatchingResult mr, String oferta, JSONTreatmentOld jt, RdfConstructor rc) throws JSONException {
-		JSONArray offerStructure = jt.getOportunities(oferta);
-		HashMap<String, String> relationStructureOffer = new HashMap<String, String>();
-		for (int i = 0; i < offerStructure.length(); i++) {
-			String req = offerStructure.getJSONObject(i).getJSONObject("req").getString("value");
-			String field = rc.transform(offerStructure.getJSONObject(i).getJSONObject("field").getString("value"));
-			relationStructureOffer.put(field, req);
-		}
-		System.out.println(relationStructureOffer.toString());
-		
-		JSONObject semanticResult = new JSONObject();
-		while (mr.hasNext()) {
-			GraphMatchingResult gmr = mr.next();
-			List clusterList = gmr.getClusterMatchingResultList();
-			gmr.getResGraphEntryNode().getURI(); // name of enterprise
-			gmr.getSimilarity(); // simililarity global
-			for (Iterator itC = clusterList.iterator(); itC.hasNext();) {
-				HashMap<String, Float> store = new HashMap<String, Float>();
-				JSONObject skills= new JSONObject();
-				ClusterMatchingResult cmr = (ClusterMatchingResult) itC.next();
-				List nodeList = cmr.getNodeMatchingResultList();
-				for (Iterator itN = nodeList.iterator(); itN.hasNext();) {
-					NodeMatchingResult nmr = (NodeMatchingResult) itN.next();
-					List propertyList = nmr.getPropertyMatchingResultList();
-					for (Iterator itP = propertyList.iterator(); itP.hasNext();) {
-						JSONObject  aux = new JSONObject(); //En caso de introducir semantica con el método introduceSemantic2
-						PropertyMatchingResult pmr = (PropertyMatchingResult) itP.next();
-						String req = relationStructureOffer.get(pmr.getQueryPropVal().toString().substring(32));
-						System.out.println("QUE ES ESTOOO:");
-						System.out.println(req);
-						if (req	!= null){
-							if (store.get(req) != null)
-								store.put(req, (store.get(req)+nmr.getSimilarity())/2);
-							else
-								store.put(req, nmr.getSimilarity());
-							aux.put("value", store.get(req)); // Ver nota de aux
-							skills.put(req, store.get(req));
-						}
-					}
-				}
-				semanticResult.put(gmr.getResGraphEntryNode().getURI(), skills);
-			}
-		}		
-		mr.setToFirst();
-		
-		return semanticResult;
-	}
-	
-	/**
-	 * @param mr
-	 * @param oferta
-	 * @param jt
-	 * @param rc
-	 * @return
 	 * @throws JSONException 
 	 */
 	public JSONArray getSemanticResult (MatchingResult mr, JSONTreatment jt) throws JSONException {
@@ -290,10 +230,13 @@ public class SemanticSemMF {
 		while (mr.hasNext()) {
 			GraphMatchingResult gmr = mr.next();
 			String id = gmr.getResGraphEntryNode().getURI().toString().substring(28);
-			float semanticResult = gmr.getSimilarity(); 
+			float semanticResult = gmr.getSimilarity();
 			for (int i = 0; i < response.length(); i++) {
-				if (id.equals(response.getJSONObject(i).get("id").toString()))
-						response.getJSONObject(i).put("semantic", semanticResult);
+				if (id.equals(response.getJSONObject(i).get("id").toString())) {
+					response.getJSONObject(i).put("semantic", semanticResult);
+				} else {
+					response.getJSONObject(i).put("semantic", 0);
+				}
 			}
 		}		
 		mr.setToFirst();
@@ -322,5 +265,6 @@ public class SemanticSemMF {
 			out.close();
 		}
 		catch (IOException e) { System.out.println(e.toString()); }
-	}	
+	}
+	
 }
