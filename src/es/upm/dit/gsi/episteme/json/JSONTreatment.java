@@ -157,7 +157,7 @@ public class JSONTreatment {
 		JSONArray filter = new JSONArray();
 		for (int j = 0; j < object.length(); j++) {
 			JSONObject enterprise = object.getJSONObject(j);
-			if (enterprise.getDouble("weight") <= 0.5)
+			if (enterprise.getDouble("weight") >= 0.5)
 				filter.put(enterprise);
 		}
 		return filter;
