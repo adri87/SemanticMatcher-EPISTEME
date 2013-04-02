@@ -111,6 +111,7 @@ public class CompanyMatcher extends HttpServlet {
 			}	
 		}
 		req = jt.filterSemantic(req);
+		System.out.println(req);
 		
 		// return output
 		response.setContentType("application/json");
